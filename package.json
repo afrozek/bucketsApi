@@ -1,0 +1,48 @@
+{
+  "name": "bucketsapi",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "jshintConfig": {
+    "browser": true,
+    "jquery": true,
+    "node": true,
+    "esversion": 6,
+    "camelcase": true,
+    "eqeqeq": true,
+    "indent": 2,
+    "latedef": true,
+    "maxlen": 100,
+    "newcap": true,
+    "quotmark": "single",
+    "strict": true,
+    "undef": true,
+    "unused": true,
+    "eqnull": true
+  },
+  "dependencies": {
+    "@babel/core": "^7.4.4",
+    "@babel/preset-env": "^7.4.4",
+    "@babel/register": "^7.4.4",
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "~1.18.2",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.9",
+    "express": "^4.16.4",
+    "hbs": "~4.0.1",
+    "jshint": "^2.10.2",
+    "jsonwebtoken": "^8.1.0",
+    "mongoose": "^5.0.0-rc0",
+    "morgan": "~1.9.0",
+    "node-pre-gyp": "^0.13.0",
+    "serve-favicon": "~2.4.5"
+  },
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-config-google": "^0.12.0",
+    "eslint-plugin-import": "^2.17.2"
+  }
+}
