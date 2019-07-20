@@ -3,10 +3,17 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt-nodejs';
 import User from './users.model';
 import updateUser from './updateUser.controller';
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
 
 // api routes
 const usersApiModule = (express) => {
   const usersApi = express.Router();
+
+  
+
+  usersApi.use('/docs', swaggerUi.serve);
+  usersApi.get('/docs', swaggerUi.setup(swaggerDocument));
 
   // login
   usersApi.post('/login', login);
