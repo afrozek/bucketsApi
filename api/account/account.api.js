@@ -28,6 +28,7 @@ function createAccount(req, res) {
     }
     return res.status(200).json({success: true, message: 'Account Created', user});
   });
+  
 }; // end createAccount
 
 export default accountApiModule;

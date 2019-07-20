@@ -1,6 +1,6 @@
 // const ObjectId = require('mongodb').ObjectID;
-import * as jwt from 'jsonwebtoken';
-import * as bcrypt from 'bcrypt-nodejs';
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt-nodejs';
 import User from './users.model';
 import updateUser from './updateUser.controller';
 
@@ -20,6 +20,7 @@ const usersApiModule = (express) => {
 
   return usersApi;
 };
+
 
 /* Methods */
 

@@ -45,8 +45,8 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/projects/dog1', express.static(path.join(__dirname, 'project1')));
-app.use('/projects/dog2', express.static(path.join(__dirname, 'project2')));
+app.use('/projects/staticSite1', express.static(path.join(__dirname, 'project1')));
+app.use('/projects/staticSite2', express.static(path.join(__dirname, 'project2')));
 
 console.log(path.join(__dirname, 'project1'));
 
