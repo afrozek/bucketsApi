@@ -6,6 +6,7 @@ import updateUser from './updateUser.controller';
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
 
+
 // api routes
 const usersApiModule = (express) => {
   const usersApi = express.Router();
