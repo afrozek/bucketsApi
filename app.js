@@ -52,10 +52,10 @@ console.log(path.join(__dirname, 'project1'));
 
 app.use('/', index);
 
-const usersApi = require('./api/users/users.api.js').default(express);
-const accountApi = require('./api/account/account.api.js').default(express);
+const usersApi = require('./api/users/users.api.js')(express);
+const accountApi = require('./api/account/account.api.js')(express);
 
 app.use('/api/users', usersApi);
 app.use('/api/account', accountApi);
 
-app.listen(3200);
+module.exports = app.listen(3200);

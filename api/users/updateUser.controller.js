@@ -1,5 +1,5 @@
-import User from './users.model';
-import Account from '../account/account.model';
+const User = require('./users.model');
+const Account = require('../account/account.model');
 
 module.exports = (req, res) => {
   // res.status(200).send('works');

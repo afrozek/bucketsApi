@@ -1,8 +1,8 @@
 // const ObjectId = require('mongodb').ObjectID;
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt-nodejs';
-import User from './users.model';
-import updateUser from './updateUser.controller';
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt-nodejs');
+const User = require('./users.model');
+const updateUser = require('./updateUser.controller');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
 
@@ -167,4 +167,4 @@ const createSendToken = (user, res, message) => {
   });
 };
 
-export default usersApiModule;
+module.exports = usersApiModule;

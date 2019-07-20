@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-import User from '../users/users.model';
+const User = require('../users/users.model');
 
 const AccountSchema = new mongoose.Schema({
   userId: {type: mongoose.Schema.Types.String, ref: 'User'},

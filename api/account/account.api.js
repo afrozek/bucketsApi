@@ -1,7 +1,7 @@
 const ObjectId = require('mongodb').ObjectID;
 
 // import User from '../users/users.model';
-import Account from './account.model';
+const Account = require('./account.model');
 
 // api routes
 const accountApiModule = (express) => {
@@ -31,4 +31,4 @@ function createAccount(req, res) {
   
 }; // end createAccount
 
-export default accountApiModule;
+module.exports = accountApiModule;
