@@ -6,11 +6,38 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose'); // ORM
 
+
 const index = require('./routes/index');
 
 const app = express();
 const port = 3200;
 const dbName = 'buckets';
+
+
+// graphql
+const graphqlHTTP = require('express-graphql');
+const { buildSchema } = require('graphql');
+
+// Construct a schema, using GraphQL schema language
+const schema = buildSchema(`
+  type Query {
+    hello: String
+  }
+`);
+
+// The root provides a resolver function for each API endpoint
+const root = {
+  hello: () => {
+    return 'Hello world!';
+  },
+};
+
+app.use('/graphql', graphqlHTTP({
+  schema: schema,
+  rootValue: root,
+  graphiql: true,
+}));
+
 
 mongoose.connect('mongodb://localhost:27017/' + dbName);
 

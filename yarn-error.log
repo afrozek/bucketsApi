@@ -1,5 +1,5 @@
 Arguments: 
-  /usr/local/bin/node /usr/local/Cellar/yarn/1.15.2/libexec/bin/yarn.js add mocha
+  /usr/local/bin/node /usr/local/Cellar/yarn/1.15.2/libexec/bin/yarn.js add express express-graphql graphql
 
 PATH: 
   /Library/Frameworks/Python.framework/Versions/3.7/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/froost/Library/Android/sdk/tools:/Users/froost/Library/Android/sdk/platform-tools:/Users/froost/Library/Android/sdk/tools/android:/Users/froost/Library/Android/sdk/tools:/Users/froost/Library/Android/sdk/platform-tools:/Users/froost/Library/Android/sdk/tools/android
