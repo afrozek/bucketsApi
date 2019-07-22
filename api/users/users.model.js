@@ -6,9 +6,9 @@ const Account = require('../account/account.model');
 const UserSchema = new mongoose.Schema({
   email: {type: String, unique: true},
   password: {type: String, required: true},
-  dateCreated: {type: Date},
-  account: {type: mongoose.Schema.Types.String, ref: 'Account'},
-
+  date_created: {type: Date},
+  date_modififed: { type: Date},
+  account: {type: mongoose.Schema.Types.String, ref: 'Account'}
 });
 
 const User = mongoose.model('User', UserSchema);
