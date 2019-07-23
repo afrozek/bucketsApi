@@ -14,29 +14,46 @@ const port = 3200;
 const dbName = 'buckets';
 
 
-// graphql
+// GRAPHQL MONGOOSE-------------------
+
+import {models} from './api/models.js';
+import schema from './graphql/index';
 const graphqlHTTP = require('express-graphql');
-const { buildSchema } = require('graphql');
 
-// Construct a schema, using GraphQL schema language
-const schema = buildSchema(`
-  type Query {
-    hello: String
-  }
-`);
 
-// The root provides a resolver function for each API endpoint
-const root = {
-  hello: () => {
-    return 'Hello world!';
-  },
+import {GraphQLServer, PubSub} from 'graphql-yoga';
+
+
+const pubsub = new PubSub();
+
+const options = {
+  port: process.env.PORT || port,
+  endpoint: '/graphql',
+  subscriptions: '/subscriptions',
+  playground: '/playground',
+};
+
+
+const context = {
+  models,
+  pubsub,
 };
 
 app.use('/graphql', graphqlHTTP({
   schema: schema,
   rootValue: root,
   graphiql: true,
+  context: context
 }));
+
+// -------------------
+
+// const app = new GraphQLServer({
+//   schema,
+//   context,
+// });
+
+
 
 
 mongoose.connect('mongodb://localhost:27017/' + dbName);
@@ -86,3 +103,7 @@ app.use('/api/users', usersApi);
 app.use('/api/account', accountApi);
 
 module.exports = app.listen(3200);
+
+// server.start(options, ({port}) => {
+//   console.log(`🚀 Server is running on http://localhost:${port}`);
+// });
