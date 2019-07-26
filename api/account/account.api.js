@@ -8,12 +8,24 @@ const accountApiModule = (express) => {
   const accountApi = express.Router();
 
   accountApi.post('/user/:userId', createAccount);
+  accountApi.get('/all', getAll);
 
 
   return accountApi;
 };
 
 /* Methods */
+
+function getAll(req, res) {
+  Account.find({}, function(err, result) {
+      if(result){
+          res.status(200).send(result)
+      }
+      else {
+          res.status(400).send(err);
+      }
+  }).populate('transactions')
+}
 
 // eslint-disable-next-line require-jsdoc
 function createAccount(req, res) {

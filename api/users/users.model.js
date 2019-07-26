@@ -8,7 +8,7 @@ const UserSchema = new mongoose.Schema({
   password: {type: String, required: true},
   date_created: {type: Date},
   date_modififed: { type: Date},
-  account: {type: mongoose.Schema.Types.String, ref: 'Account'}
+  account: [{type: mongoose.Schema.Types.ObjectId, ref: 'Account'}],
 });
 
 const User = mongoose.model('User', UserSchema);
@@ -27,7 +27,7 @@ UserSchema.pre('find', function(next) {
 
 UserSchema.pre('save', function(next) {
   console.log('inside userscheme pre');
-  let user = this;
+  const user = this;
 
   // if(!user.isModified('password')) return next();
 

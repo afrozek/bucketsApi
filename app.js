@@ -98,9 +98,12 @@ app.use('/', index);
 
 const usersApi = require('./api/users/users.api.js')(express);
 const accountApi = require('./api/account/account.api.js')(express);
+const transactionApiModule = require('./api/transaction/transaction.api.js')(express);
+
 
 app.use('/api/users', usersApi);
 app.use('/api/account', accountApi);
+app.use('/api/transaction', transactionApiModule);
 
 module.exports = app.listen(3200);
 

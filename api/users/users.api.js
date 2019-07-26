@@ -6,6 +6,24 @@ const updateUser = require('./updateUser.controller');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
 
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const keys = require('../../config/keys');
+
+passport.use(new GoogleStrategy({
+  clientID: keys.googleClientId,
+  clientSecret: keys.googleClientSecret,
+  callbackURL: '/api/users/auth/google/callback',
+}, (accessToken, refreshToken, profile, done) => {
+  console.log('accessToken: ', accessToken);
+  console.log('refreshToken: ', refreshToken);
+  console.log('profile: ', profile);
+}));
+
+const Transaction = require('../transaction/transaction.model');
+const Account = require('../account/account.model');
+
+
 
 // api routes
 const usersApiModule = (express) => {
@@ -15,6 +33,12 @@ const usersApiModule = (express) => {
 
   usersApi.use('/docs', swaggerUi.serve);
   usersApi.get('/docs', swaggerUi.setup(swaggerDocument));
+
+  usersApi.get('/auth/google', passport.authenticate('google', {
+    scope: ['profile', 'email']
+  }));
+
+  usersApi.get('/auth/google/callback', passport.authenticate('google'));
 
   // login
   usersApi.post('/login', login);
@@ -34,18 +58,25 @@ const usersApiModule = (express) => {
 
 const getUsers = (req, res) => {
   // return all users , except password field
-  User.find({}, {password: 0}, (err, users) => {
-    if (!err) {
-      return res.status(200).json({
-        data: {
-          kind: 'user',
-          totalItems: users.length,
-          items: users,
-        },
-      });
+  User.find({}, {password: 0}).populate({
+    path: 'account',
+    // model: 'Account',
+    populate: {
+      path: 'transactions',
     }
-    return res.status(400).json({error: err});
-  }).populate('account');
+  }).exec((err, data) => {
+    if (!err) {
+      res.status(200).send(data)
+      // return res.status(200).json({
+      //   data: {
+      //     kind: 'user',
+      //     totalItems: users.length,
+      //     items: users,
+      //   },
+      // });
+    }
+     else return res.status(400).json({error: err});
+  })
 };
 
 const login = (req, res) => {
