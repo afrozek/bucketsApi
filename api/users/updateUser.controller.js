@@ -30,7 +30,7 @@ module.exports = (req, res) => {
     User.findByIdAndUpdate(
         req.params.id,
         {$push: {'account': accountObjId}},
-        {new: true, runValidators: true, safe: true, upsert: true},
+        {new: true, runValidators: true, safe: true},
         function(err, data) {
           if (err) return res.status(400).send(err);
           else if (!data) return res.status(404).send('User doesn\'t exist');
