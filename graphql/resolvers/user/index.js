@@ -5,7 +5,7 @@ import User from '../../../api/users/users.model';
 export default {
   Query: {
     user: async (parent, {_id}, context, info) => {
-      return await User.findOne({_id}).populate({path: 'account'}).exec();
+      return await User.findOne({_id}).populate({path: 'account', populate: { path: 'transactions'}}).exec();
     },
     users: async (parent, args, context, info) => {
       const users = await User.find({})

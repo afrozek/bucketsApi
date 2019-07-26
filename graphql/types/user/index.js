@@ -1,7 +1,13 @@
 
 export default `
+type Transaction {
+    name: String
+    amount: Float
+}
+
 type Account {
     incomeYearly: String!
+    transactions: [Transaction]
 }
 
   type User {
