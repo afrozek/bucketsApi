@@ -13,7 +13,7 @@ module.exports = (req, res) => {
   // save to mongo
   newAccount.save((err, account) => {
     if (err) {
-      return res.status(400).json({success: false}, {message: err});
+      return res.status(400).json({success: false, message: err});
     } else {
       updateUser(account._id);
       // res.status(200).send(account);
@@ -22,19 +22,21 @@ module.exports = (req, res) => {
 
   // eslint-disable-next-line require-jsdoc
   function updateUser(accountId) {
-
-    let accountObjId = accountId;
-    console.log("accountObjId: ", accountObjId)
-    console.log("req.params.id: ", req.params.id)
+    const accountObjId = accountId;
+    console.log('accountObjId: ', accountObjId);
+    console.log('req.params.id: ', req.params.id);
 
     User.findByIdAndUpdate(
         req.params.id,
         {$push: {'account': accountObjId}},
         {new: true, runValidators: true, safe: true},
         function(err, data) {
-          if (err) return res.status(400).send(err);
-          else if (!data) return res.status(404).send('User doesn\'t exist');
-          else return res.status(200).send(data);
+          if (err)
+            {return res.status(400).json({success: false, message: err});}
+          else if (!data)
+            {return res.status(404).json({success: false, message: "User does not exist"});}
+          else
+            {return res.status(200).json({success: true, message: data});}
         }
     );
   }
