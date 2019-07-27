@@ -10,33 +10,37 @@ const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const keys = require('../../config/keys');
 
-passport.use(new GoogleStrategy({
-  clientID: keys.googleClientId,
-  clientSecret: keys.googleClientSecret,
-  callbackURL: '/api/users/auth/google/callback',
-}, (accessToken, refreshToken, profile, done) => {
-  console.log('accessToken: ', accessToken);
-  console.log('refreshToken: ', refreshToken);
-  console.log('profile: ', profile);
-}));
+passport.use(
+    new GoogleStrategy(
+        {
+          clientID: keys.googleClientId,
+          clientSecret: keys.googleClientSecret,
+          callbackURL: '/api/users/auth/google/callback',
+        },
+        (accessToken, refreshToken, profile, done) => {
+          console.log('accessToken: ', accessToken);
+          console.log('refreshToken: ', refreshToken);
+          console.log('profile: ', profile);
+        }
+    )
+);
 
 const Transaction = require('../transaction/transaction.model');
 const Account = require('../account/account.model');
-
-
 
 // api routes
 const usersApiModule = (express) => {
   const usersApi = express.Router();
 
-  
-
   usersApi.use('/docs', swaggerUi.serve);
   usersApi.get('/docs', swaggerUi.setup(swaggerDocument));
 
-  usersApi.get('/auth/google', passport.authenticate('google', {
-    scope: ['profile', 'email']
-  }));
+  usersApi.get(
+      '/auth/google',
+      passport.authenticate('google', {
+        scope: ['profile', 'email'],
+      })
+  );
 
   usersApi.get('/auth/google/callback', passport.authenticate('google'));
 
@@ -53,30 +57,30 @@ const usersApiModule = (express) => {
   return usersApi;
 };
 
-
 /* Methods */
 
 const getUsers = (req, res) => {
   // return all users , except password field
-  User.find({}, {password: 0}).populate({
-    path: 'account',
-    // model: 'Account',
-    populate: {
-      path: 'transactions',
-    }
-  }).exec((err, data) => {
-    if (!err) {
-      res.status(200).send(data)
-      // return res.status(200).json({
-      //   data: {
-      //     kind: 'user',
-      //     totalItems: users.length,
-      //     items: users,
-      //   },
-      // });
-    }
-     else return res.status(400).json({error: err});
-  })
+  User.find({}, {password: 0})
+      .populate({
+        path: 'account',
+        // model: 'Account',
+        populate: {
+          path: 'transactions',
+        },
+      })
+      .exec((err, data) => {
+        if (!err) {
+          res.status(200).send(data);
+        // return res.status(200).json({
+        //   data: {
+        //     kind: 'user',
+        //     totalItems: users.length,
+        //     items: users,
+        //   },
+        // });
+        } else return res.status(400).json({error: err});
+      });
 };
 
 const login = (req, res) => {
@@ -97,23 +101,23 @@ const login = (req, res) => {
           message: 'A user with that Email does not exist',
         },
       });
-    }
-
-    // email exists, verify the password
-    bcrypt.compare(password, user.password, (err, isMatch) => {
-      if (err) {
-        throw err;
-      } else if (isMatch) {
-        createSendToken(user, res);
-      } else {
-        return res.status(400).json({
-          error: {
-            code: 400,
-            message: 'Incorrect Password',
-          },
-        });
-      }
-    }); // end compare
+    } else {
+      // email exists, verify the password
+      bcrypt.compare(password, user.password, (err, isMatch) => {
+        if (err) {
+          return res.status(401).json({success: false, message: err});
+        } else if (isMatch) {
+          createSendToken(user, res);
+        } else {
+          return res.status(400).json({
+            error: {
+              code: 400,
+              message: 'Incorrect Password',
+            },
+          });
+        }
+      }); // end compare
+    } // end else
   }); // end find
 }; // end login
 
@@ -129,7 +133,7 @@ const signup = (req, res) => {
   for (const field in form) {
     if (form.hasOwnProperty(field)) {
       if (!form[field]) {
-        message = `${field} is a required field`;
+        const message = `${field} is a required field`;
         return res.status(400).json({success: false, message});
       }
     }
@@ -138,14 +142,12 @@ const signup = (req, res) => {
   // check for duplicate email values
   User.find({email: form.email}, (err, data) => {
     if (err) {
-      res.status(400).json(err);
+      return res.status(400).json(err);
     } else if (data.length >= 1) {
-      return res
-          .status(200)
-          .json({
-            success: false,
-            message: 'a user with that email already exists',
-          });
+      return res.status(200).json({
+        success: false,
+        message: 'a user with that email already exists',
+      });
     }
   }); // end find
 
@@ -160,9 +162,10 @@ const signup = (req, res) => {
   // save to mongo
   newUser.save((err, user) => {
     if (err) {
-      return res.status(400).json({success: false}, {message: err});
+      return res.status(400).json({success: false, message: err});
+    } else {
+      return res.status(200).json({success: true, message: 'User Created', user});
     }
-    res.status(200).json({success: true, message: 'User Created', user});
   });
 }; // end post addUser
 

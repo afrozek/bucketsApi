@@ -11,7 +11,6 @@ const UserSchema = new mongoose.Schema({
   account: [{type: mongoose.Schema.Types.ObjectId, ref: 'Account'}],
 });
 
-const User = mongoose.model('User', UserSchema);
 
 // UserSchema.methods.comparePasswords = function(password, callback){
 // 	bcrypt.compare(password, this.password, callback);
@@ -29,7 +28,7 @@ UserSchema.pre('save', function(next) {
   console.log('inside userscheme pre');
   const user = this;
 
-  // if(!user.isModified('password')) return next();
+  if(!user.isModified('password')) return next();
 
   bcrypt.genSalt(10, function(err, salt) {
     if (err) {
@@ -44,11 +43,13 @@ UserSchema.pre('save', function(next) {
       }
 
       user.password = hash;
-      console.log(user.password);
       next();
     });
   });
 });
+
+
+const User = mongoose.model('User', UserSchema);
 
 
 module.exports = mongoose.model('User', UserSchema);
