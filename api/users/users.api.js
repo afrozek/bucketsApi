@@ -95,9 +95,9 @@ const login = (req, res) => {
 
     // if email doesnt exist
     if (!user) {
-      return res.status(200).json({
+      return res.status(401).json({
         error: {
-          code: 404,
+          code: 401,
           message: 'A user with that Email does not exist',
         },
       });
